@@ -45,6 +45,7 @@ class RoomList extends Component {
                 style={{
                     backgroundColor: 'greenyellow',
                     color: 'steelblue',
+                    flexGrow: 1,
                     padding: 1 + 'em',
                 }}
             >

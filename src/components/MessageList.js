@@ -26,13 +26,20 @@ class MessageList extends Component {
     }
     render() {
         return (
-            <div className="message-list" style={{ padding: 1 + 'em' }}>
+            <div
+                className="message-list"
+                style={{ padding: '1em', flexGrow: 2 }}
+            >
                 <div id="messages">
                     {this.state.messages
                         .filter(
                             msg => msg.room.toString() === this.props.activeRoom
                         )
-                        .map((msg, index) => <p key={index}>{msg.text}</p>)}
+                        .map((msg, index) => (
+                            <p key={index}>
+                                {msg.text} - <em>{msg.username}</em>
+                            </p>
+                        ))}
                 </div>
             </div>
         );

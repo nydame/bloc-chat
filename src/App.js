@@ -43,7 +43,7 @@ class App extends Component {
                 <h1>
                     {this.state.activeRoom
                         ? "You're in the " + this.state.activeRoomName + ' room'
-                        : 'Welcome! Choose a room...'}
+                        : 'Welcome to BlocChat! Choose a room...'}
                 </h1>
                 <div style={{ display: 'flex' }}>
                     <RoomList
