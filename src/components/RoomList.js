@@ -61,6 +61,7 @@ class RoomList extends Component {
                             onClick={ev => {
                                 this.props.updateActiveRoom(ev);
                             }}
+                            style={{ cursor: 'pointer' }}
                         >
                             {room.name}
                         </h2>
