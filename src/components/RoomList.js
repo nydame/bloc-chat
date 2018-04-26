@@ -14,6 +14,7 @@ class RoomList extends Component {
     }
 
     // UTILITY FNS AND EVENT HANDLERS
+
     componentDidMount() {
         this.updateRooms();
     }
@@ -21,8 +22,7 @@ class RoomList extends Component {
     updateRooms() {
         this.roomsRef.on('child_added', snapshot => {
             const room = snapshot.val();
-            room.key = snapshot.key;
-            // WHY DOESN'T push() WORK ON NEXT LINE???
+            room.key = snapshot.key; // VERY IMPORTANT STEP!!!
             this.setState({ rooms: this.state.rooms.concat(room) });
         });
     }
@@ -40,11 +40,30 @@ class RoomList extends Component {
 
     render() {
         return (
-            <div className="room-list">
-                <h1>Welcome!</h1>
+            <div
+                className="room-list"
+                style={{
+                    backgroundColor: 'greenyellow',
+                    color: 'steelblue',
+                    padding: 1 + 'em',
+                }}
+            >
                 <div id="rooms">
                     {this.state.rooms.map((room, index) => (
-                        <h2 key={index}>{room.name}</h2>
+                        <h2
+                            key={index}
+                            id={room.key}
+                            className={
+                                this.props.activeRoom === room.key
+                                    ? 'active'
+                                    : ''
+                            }
+                            onClick={ev => {
+                                this.props.updateActiveRoom(ev);
+                            }}
+                        >
+                            {room.name}
+                        </h2>
                     ))}
                 </div>
                 <form
