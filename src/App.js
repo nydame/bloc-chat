@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import './App.css';
 import RoomList from './components/RoomList';
 import MessageList from './components/MessageList';
+import User from './components/User';
 import * as firebase from 'firebase';
 
 // Initialize Firebase
@@ -55,6 +56,9 @@ class App extends Component {
                         firebase={firebase}
                         activeRoom={this.state.activeRoom}
                     />
+                </div>
+                <div className="User">
+                    <User firebase={firebase} />
                 </div>
             </div>
         );
