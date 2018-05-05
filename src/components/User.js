@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import SendMessageForm from './SendMessageForm';
 
 class User extends Component {
     constructor(props) {
@@ -34,14 +35,13 @@ class User extends Component {
             });
     }
     render() {
-        const { firebase } = this.props;
+        const { firebase, activeRoom } = this.props;
+        const username = this.state.loggedInUser
+            ? this.state.loggedInUser.displayName
+            : 'Guest';
         return (
             <div className="user">
-                {this.state.loggedInUser ? (
-                    <p>Welcome, {this.state.loggedInUser.displayName}!</p>
-                ) : (
-                    <p>Hello, Guest</p>
-                )}
+                <p className="user-greeting">Hello, {username}!</p>
                 {this.state.loggedInUser ? (
                     <button onClick={ev => this.handleLogOut(ev)}>
                         Log out
@@ -54,6 +54,15 @@ class User extends Component {
                     >
                         Log in
                     </button>
+                )}
+                {this.state.loggedInUser ? (
+                    <SendMessageForm
+                        activeRoom={this.props.activeRoom}
+                        user={this.state.loggedInUser}
+                        firebase={firebase}
+                    />
+                ) : (
+                    <p>Please log in to be able to participate in Bloc Chat.</p>
                 )}
             </div>
         );

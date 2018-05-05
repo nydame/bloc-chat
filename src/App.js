@@ -58,7 +58,10 @@ class App extends Component {
                     />
                 </div>
                 <div className="User">
-                    <User firebase={firebase} />
+                    <User
+                        firebase={firebase}
+                        activeRoom={this.state.activeRoom}
+                    />
                 </div>
             </div>
         );
