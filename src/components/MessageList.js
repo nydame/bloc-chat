@@ -5,7 +5,6 @@ class MessageList extends Component {
         super(props);
         this.state = {
             messages: [],
-            newMessageText: '',
         };
         this.messagesRef = this.props.firebase.database().ref('messages');
         this.updateMessages = this.updateMessages.bind(this);

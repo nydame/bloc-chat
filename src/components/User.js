@@ -55,14 +55,16 @@ class User extends Component {
                         Log in
                     </button>
                 )}
-                {this.state.loggedInUser ? (
+                {this.state.loggedInUser && this.props.activeRoom ? (
                     <SendMessageForm
                         activeRoom={this.props.activeRoom}
                         user={this.state.loggedInUser}
                         firebase={firebase}
                     />
                 ) : (
-                    <p>Please log in to be able to participate in Bloc Chat.</p>
+                    <p>
+                        Please log in and choose a room to join a conversation.
+                    </p>
                 )}
             </div>
         );
