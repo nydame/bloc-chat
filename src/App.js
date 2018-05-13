@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 // import logo from './logo.svg';
 import './App.css';
+import Header from './components/Header';
 import RoomList from './components/RoomList';
 import MessageList from './components/MessageList';
 import User from './components/User';
@@ -45,12 +46,11 @@ class App extends Component {
     render() {
         return (
             <div className="App">
-                <h1>
-                    {this.state.activeRoom
-                        ? "You're in the " + this.state.activeRoomName + ' room'
-                        : 'Welcome to BlocChat! Choose a room...'}
-                </h1>
-                <div style={{ display: 'flex' }}>
+                <Header
+                    activeRoom={this.state.activeRoom}
+                    activeRoomName={this.state.activeRoomName}
+                />
+                <main style={{ display: 'flex' }}>
                     <RoomList
                         firebase={firebase}
                         activeRoom={this.state.activeRoom}
@@ -62,13 +62,13 @@ class App extends Component {
                         firebase={firebase}
                         activeRoom={this.state.activeRoom}
                     />
-                </div>
-                <div className="User">
+                </main>
+                <aside className="App-intro">
                     <User
                         firebase={firebase}
                         activeRoom={this.state.activeRoom}
                     />
-                </div>
+                </aside>
             </div>
         );
     }
