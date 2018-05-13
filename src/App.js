@@ -20,11 +20,10 @@ firebase.initializeApp(config);
 class App extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-            activeRoom: 0,
-            activeRoomName: '',
-        };
+        this.openingState = { activeRoom: 0, activeRoomName: '' };
+        this.state = this.openingState;
         this.updateActiveRoom = this.updateActiveRoom.bind(this);
+        this.resetActiveRoom = this.resetActiveRoom.bind(this);
     }
 
     // UTILITY FNS AND EVENT HANDLERS
@@ -36,6 +35,11 @@ class App extends Component {
             activeRoom: ev.target.id,
             activeRoomName: ev.target.textContent,
         });
+    }
+
+    resetActiveRoom() {
+        console.log('No active room');
+        this.setState(this.openingState);
     }
 
     render() {
@@ -51,6 +55,8 @@ class App extends Component {
                         firebase={firebase}
                         activeRoom={this.state.activeRoom}
                         updateActiveRoom={this.updateActiveRoom}
+                        resetActiveRoom={this.resetActiveRoom}
+                        deleteRoom={this.deleteRoom}
                     />
                     <MessageList
                         firebase={firebase}

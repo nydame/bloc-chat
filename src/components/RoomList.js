@@ -9,8 +9,9 @@ class RoomList extends Component {
         };
         this.roomsRef = this.props.firebase.database().ref('rooms');
         this.updateRooms = this.updateRooms.bind(this);
-        this.handleChange = this.handleChange.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
+        this.deleteRoom = this.deleteRoom.bind(this);
+        this.handleInputChange = this.handleInputChange.bind(this);
+        this.addRoom = this.addRoom.bind(this);
     }
 
     // UTILITY FNS AND EVENT HANDLERS
@@ -25,17 +26,51 @@ class RoomList extends Component {
             room.key = snapshot.key; // VERY IMPORTANT STEP!!!
             this.setState({ rooms: this.state.rooms.concat(room) });
         });
+        this.roomsRef.on('child_removed', snapshot => {
+            const deletedRoom = snapshot.val();
+            deletedRoom.key = snapshot.key;
+            // update rooms
+            this.setState({
+                rooms: this.state.rooms.filter(
+                    room => room.key !== deletedRoom.key
+                ),
+            });
+            // reset active room if deleted room was active
+            if (deletedRoom.key === this.props.activeRoom) {
+                console.log('resetting active room');
+                this.props.resetActiveRoom();
+            }
+        });
     }
 
-    handleChange(ev) {
+    deleteRoom(ev) {
+        console.log(ev.target.dataset.roomid);
+        // ask Are you sure? then remove room if confirmed
+        window.confirm(
+            'Are you sure you want to delete the ' +
+                ev.target.dataset.roomname +
+                ' room?'
+        ) && this.roomsRef.child(ev.target.dataset['roomid']).remove();
+    }
+
+    handleInputChange(ev) {
         // update state (local)
         this.setState({ newRoomName: ev.target.value });
     }
 
-    handleSubmit(ev) {
+    addRoom(ev) {
+        // keep submit event from causing page reload
         ev.preventDefault();
-        // update database (remote)
-        this.roomsRef.push().set({ name: this.state.newRoomName });
+        // update database (remote) and clear text field (local)
+        this.roomsRef.push().set({ name: this.state.newRoomName }, err => {
+            if (err) {
+                window.alert(
+                    'Sorry, your action could not be completed due to ' + err
+                );
+            } else {
+                this.setState({ newRoomName: '' });
+            }
+        });
     }
 
     render() {
@@ -51,31 +86,43 @@ class RoomList extends Component {
             >
                 <div id="rooms">
                     {this.state.rooms.map((room, index) => (
-                        <h2
-                            key={index}
-                            id={room.key}
-                            className={
-                                this.props.activeRoom === room.key
-                                    ? 'active'
-                                    : ''
-                            }
-                            onClick={ev => {
-                                this.props.updateActiveRoom(ev);
-                            }}
-                            style={{ cursor: 'pointer' }}
-                        >
-                            {room.name}
-                        </h2>
+                        <div key={index} className="room">
+                            <h2
+                                id={room.key}
+                                className={
+                                    this.props.activeRoom === room.key
+                                        ? 'active'
+                                        : ''
+                                }
+                                onClick={ev => {
+                                    this.props.updateActiveRoom(ev);
+                                }}
+                                style={{
+                                    cursor: 'pointer',
+                                    display: 'inline-block',
+                                }}
+                            >
+                                {room.name}
+                            </h2>
+                            &nbsp;
+                            <span
+                                data-roomname={room.name}
+                                data-roomid={room.key}
+                                onClick={ev => {
+                                    this.deleteRoom(ev);
+                                }}
+                                style={{ cursor: 'pointer' }}
+                            >
+                                [x]
+                            </span>
+                        </div>
                     ))}
                 </div>
-                <form
-                    className="room-form"
-                    onSubmit={e => this.handleSubmit(e)}
-                >
+                <form className="room-form" onSubmit={e => this.addRoom(e)}>
                     <input
                         type="text"
                         value={this.state.newRoomName}
-                        onChange={e => this.handleChange(e)}
+                        onChange={e => this.handleInputChange(e)}
                     />
                     <input type="submit" value="Add a new room" />
                 </form>
