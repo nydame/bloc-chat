@@ -98,8 +98,15 @@ class RoomList extends Component {
                                     this.props.updateActiveRoom(ev);
                                 }}
                                 style={{
-                                    cursor: 'pointer',
+                                    cursor:
+                                        this.props.activeRoom === room.key
+                                            ? 'default'
+                                            : 'pointer',
                                     display: 'inline-block',
+                                    color:
+                                        this.props.activeRoom === room.key
+                                            ? 'silver'
+                                            : 'currentColor',
                                 }}
                             >
                                 {room.name}

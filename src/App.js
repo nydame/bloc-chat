@@ -30,12 +30,14 @@ class App extends Component {
     // UTILITY FNS AND EVENT HANDLERS
 
     updateActiveRoom(ev) {
-        console.log('New active room!');
-        console.log(ev.target.id);
-        this.setState({
-            activeRoom: ev.target.id,
-            activeRoomName: ev.target.textContent,
-        });
+        if (this.state.activeRoom !== ev.target.id) {
+            console.log('New active room!');
+            console.log(ev.target.id);
+            this.setState({
+                activeRoom: ev.target.id,
+                activeRoomName: ev.target.textContent,
+            });
+        }
     }
 
     resetActiveRoom() {
