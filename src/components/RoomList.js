@@ -61,16 +61,30 @@ class RoomList extends Component {
     addRoom(ev) {
         // keep submit event from causing page reload
         ev.preventDefault();
-        // update database (remote) and clear text field (local)
-        this.roomsRef.push().set({ name: this.state.newRoomName }, err => {
-            if (err) {
-                window.alert(
-                    'Sorry, your action could not be completed due to ' + err
-                );
-            } else {
-                this.setState({ newRoomName: '' });
-            }
-        });
+        // make sure name has not already in use
+        this.roomsRef
+            .orderByChild('name')
+            .equalTo(this.state.newRoomName)
+            .once('value', snapshot => {
+                if (snapshot.val()) {
+                    window.alert('Sorry, that room name is already in use.');
+                    return false;
+                } else {
+                    // update database (remote) and clear text field (local)
+                    this.roomsRef
+                        .push()
+                        .set({ name: this.state.newRoomName }, err => {
+                            if (err) {
+                                window.alert(
+                                    'Sorry, your action could not be completed due to ' +
+                                        err
+                                );
+                            } else {
+                                this.setState({ newRoomName: '' });
+                            }
+                        });
+                }
+            });
     }
 
     render() {
