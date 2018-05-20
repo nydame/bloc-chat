@@ -54,7 +54,7 @@ class SendMessageForm extends Component {
                     value={this.state.newMessageText}
                     onChange={e => this.handleChange(e)}
                 />
-                <input type="submit" value="Send" />
+                <input type="submit" value="Send my comment" />
             </form>
         );
     }

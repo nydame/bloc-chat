@@ -63,9 +63,11 @@ class User extends Component {
                     />
                 ) : (
                     <p>
-                        Please log in{' '}
-                        {this.props.activeRoom ? '' : 'and choose a room '}to
-                        join a conversation.
+                        {this.state.loggedInUser ? '' : 'Log in. '}
+                        {this.props.activeRoom ? '' : 'Choose a room. '}
+                        {this.state.loggedInUser && this.props.activeRoom
+                            ? 'Welcome to the conversation!'
+                            : 'Then join in the conversation!'}
                     </p>
                 )}
             </div>
